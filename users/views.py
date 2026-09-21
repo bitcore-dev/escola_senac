@@ -17,8 +17,12 @@ def activity(request):
 def profile(request):
     return render(request, 'profile.html')
 
-@login_required
-@user_passes_test[lambda user: user.is_staff]
+def is_teacher(user):
+    return user.groups.filter(name='Teacher').exists()
+
+@user_passes_test(is_teacher)
 def teacher(request):
     return render(request, 'teacher.html')
 
+def login(request):
+    return render(request, 'login.html')
